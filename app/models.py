@@ -27,7 +27,7 @@ class vyrobce(Model):
     id = Column(Integer, primary_key=True)
     vyrobce_vozidla = Column(String(50))
     def __repr__(self):
-        return self.name
+        return self.vyrobce_vozidla
         
 class typ_vozidla(Model):
     id = Column(Integer, primary_key=True)
@@ -35,7 +35,24 @@ class typ_vozidla(Model):
     vyrobce_id = Column(Integer, ForeignKey("vyrobce.id"), nullable=False)
     vyrobce = relationship("vyrobce")
     def __repr__(self):
-        return self.name
+        return self.vyrobce_vozidla
+
+class rodic(Model):
+    id = Column(Integer, primary_key=True)
+    jmeno = Column(String(50))
+    prijmeni = Column(String(50))
+    def __repr__(self):
+        return self.jmeno
+    
+class dite(Model):
+    id = Column(Integer, primary_key=True)
+    jmeno = Column(String(50))
+    prijmeni = Column(String(50))
+    rodic_id = Column(Integer, ForeignKey("rodic.id"), nullable=False)
+    rodic = relationship("rodic")
+    def __repr__(self):
+        return self.jmeno
+
 
 class Contact(Model):
     id = Column(Integer, primary_key=True)

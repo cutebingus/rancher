@@ -1,12 +1,12 @@
 import calendar
 
-from flask_appbuilder import ModelView
+from flask_appbuilder import ModelView, BaseView, expose, has_access
 from flask_appbuilder.charts.views import GroupByChartView
 from flask_appbuilder.models.group import aggregate_count
 from flask_appbuilder.models.sqla.interface import SQLAInterface
 
 from . import appbuilder, db
-from .models import Contact, ContactGroup, Gender, vyrobce, typ_vozidla
+from .models import Contact, ContactGroup, Gender, vyrobce, typ_vozidla, rodic, dite
 
 
 def fill_gender():
@@ -83,6 +83,12 @@ class VyrobceView(ModelView):
 class typ_vozidlaView(ModelView):
     datamodel = SQLAInterface(typ_vozidla)
 
+class rodicView(ModelView):
+    datamodel = SQLAInterface(rodic)
+
+class diteView(ModelView):
+    datamodel = SQLAInterface(dite)
+
 class ContactChartView(GroupByChartView):
     datamodel = SQLAInterface(Contact)
     chart_title = "Grouped contacts"
@@ -122,6 +128,33 @@ class ContactTimeChartView(GroupByChartView):
         },
     ]
 
+class MyView(BaseView):
+
+    default_view = "method1"
+
+    @expose("/method1/")
+    @has_access
+    def method1(self):
+        # do something with param1
+        # and return to previous page or index
+        return "Hello"
+
+    @expose("/method2/<string:param1>")
+    @has_access
+    def method2(self, param1):
+        # do something with param1
+        # and render template with param
+        param1 = "Goodbye %s" % (param1)
+        return param1
+
+    @expose("/method3/<string:param1>")
+    @has_access
+    def method3(self, param1):
+        # do something with param1
+        # and render template with param
+        param1 = "Goodbye %s" % (param1)
+        return self.render_template("method3.html", param1=param1)
+
 
 appbuilder.add_view(
     GroupModelView,
@@ -133,8 +166,11 @@ appbuilder.add_view(
 appbuilder.add_view(
     ContactModelView, "List Contacts", icon="fa-envelope", category="Contacts"
 )
+appbuilder.add_view(MyView(), "Magor", category="My View")
 appbuilder.add_view(VyrobceView, "List vyrobcu", icon="fa-envelope", category="Contacts")
 appbuilder.add_view(typ_vozidlaView, "List typu vozidel", icon="fa-envelope", category="Contacts")
+appbuilder.add_view(rodicView, "List rodicu", icon="fa-envelope", category="Contacts")
+appbuilder.add_view(diteView, "List deti", icon="fa-envelope", category="Contacts")
 appbuilder.add_separator("Contacts")
 appbuilder.add_view(
     ContactChartView, "Contacts Chart", icon="fa-dashboard", category="Contacts"
