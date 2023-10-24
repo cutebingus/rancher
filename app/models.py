@@ -1,7 +1,7 @@
 import datetime
 
 from flask_appbuilder import Model
-from sqlalchemy import Column, Date, ForeignKey, Integer, String
+from sqlalchemy import Column, Date, ForeignKey, Integer, String, Enum
 from sqlalchemy.orm import relationship
 
 mindate = datetime.date(datetime.MINYEAR, 1, 1)
@@ -52,6 +52,23 @@ class dite(Model):
     rodic = relationship("rodic")
     def __repr__(self):
         return self.jmeno
+    
+class vyrobek(Model):
+    id = Column(Integer, primary_key=True)
+    nazev = Column(String(70))
+    sn = Column(Integer, nullable=False)
+    def __repr__(self):
+        return self.nazev
+
+class sklad(Model):
+    id = Column(Integer, primary_key=True)
+    vyrobek_id = Column(Integer, ForeignKey("vyrobek.id"), nullable=False)
+    vyrobek = relationship("vyrobek")
+    datum = Column(Date)
+    pocet_kusu = Column(Integer)
+    stav = Column(Enum('Nakup','Prodej'), nullable=False)
+    def __repr__(self):
+        return self.stav
 
 
 class Contact(Model):

@@ -6,7 +6,7 @@ from flask_appbuilder.models.group import aggregate_count
 from flask_appbuilder.models.sqla.interface import SQLAInterface
 
 from . import appbuilder, db
-from .models import Contact, ContactGroup, Gender, vyrobce, typ_vozidla, rodic, dite
+from .models import Contact, ContactGroup, Gender, vyrobce, typ_vozidla, rodic, dite, vyrobek, sklad
 
 
 def fill_gender():
@@ -88,6 +88,12 @@ class rodicView(ModelView):
 
 class diteView(ModelView):
     datamodel = SQLAInterface(dite)
+
+class vyrobekView(ModelView):
+    datamodel = SQLAInterface(vyrobek)
+
+class skladView(ModelView):
+    datamodel = SQLAInterface(sklad)
 
 class ContactChartView(GroupByChartView):
     datamodel = SQLAInterface(Contact)
@@ -171,6 +177,8 @@ appbuilder.add_view(VyrobceView, "List vyrobcu", icon="fa-envelope", category="C
 appbuilder.add_view(typ_vozidlaView, "List typu vozidel", icon="fa-envelope", category="Contacts")
 appbuilder.add_view(rodicView, "List rodicu", icon="fa-envelope", category="Contacts")
 appbuilder.add_view(diteView, "List deti", icon="fa-envelope", category="Contacts")
+appbuilder.add_view(vyrobekView, "List vyrobku", icon="fa-envelope", category="Contacts")
+appbuilder.add_view(skladView, "List skladu", icon="fa-envelope", category="Contacts")
 appbuilder.add_separator("Contacts")
 appbuilder.add_view(
     ContactChartView, "Contacts Chart", icon="fa-dashboard", category="Contacts"

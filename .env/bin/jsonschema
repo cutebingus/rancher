@@ -1,4 +1,4 @@
-#!/tmp/kocickaX3/.env/bin/python
+#!/tmp/krajta-test/.env/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
